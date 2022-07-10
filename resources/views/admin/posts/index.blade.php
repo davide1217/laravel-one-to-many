@@ -2,7 +2,6 @@
 
 @section('content')
     <div class="container">
-        <h1>Index della CRUD</h1>
 
         @if(session('post_deleted'))
             <div class="alert alert-success" role="alert">
@@ -10,21 +9,23 @@
             </div>
         @endif
 
+        @foreach ($categories as $category)
 
+        <h1>Post per {{ $category->name }}</h1>
         <table class="table">
             <thead>
                 <tr>
                   <th scope="col">ID</th>
-                  <th scope="col">Titolo</th>
+                  <th style="width: 250px" scope="col">Titolo</th>
                   <th scope="col">Bottoni</th>
                 </tr>
             </thead>
             <tbody>
                 @foreach ($posts as $post)
+                    @if ($post->category_id == $category->id)
                     <tr>
                         <th scope="row">{{ $post->id }}</th>
                         <th>{{ $post->title }}</th>
-                        <th>{{ $post->category->name }}</th>
                         <th>
                             <a class="text-uppercase btn btn-primary" href="{{ route('admin.posts.show', $post) }}">show</a>
                             <a class="text-uppercase btn btn-dark mx-3" href="{{ route('admin.posts.edit', $post) }}">edit</a>
@@ -37,9 +38,12 @@
                             </form>
                         </th>
                     </tr>
+                    @endif
                 @endforeach
             </tbody>
         </table>
-        {{ $posts->links() }}
+
+        @endforeach
+
     </div>
 @endsection
